@@ -28,8 +28,8 @@ class qibla : Fragment(), SensorEventListener {
     private val meccaLongitude = 39.8262
 
 
-    private val currentLatitude = 33.552160057335804  // Replace with actual latitude
-    private val currentLongitude = -7.592488364696466 // Replace with actual longitude
+    private val currentLatitude = 33.552160057335804
+    private val currentLongitude = -7.592488364696466
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
