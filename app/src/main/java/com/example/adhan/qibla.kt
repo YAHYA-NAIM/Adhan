@@ -24,7 +24,6 @@ class qibla : Fragment(), SensorEventListener {
     private lateinit var compassImage: ImageView
     private lateinit var qiblaImage: ImageView
 
-    // Mecca coordinates
     private val meccaLatitude = 21.4225
     private val meccaLongitude = 39.8262
 
@@ -36,31 +35,31 @@ class qibla : Fragment(), SensorEventListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+
         val view = inflater.inflate(R.layout.fragment_qibla, container, false)
 
-        // Initialize Sensor Manager
+
         sensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         rotationVectorSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
 
-        // Find the main layout and compass ImageView
+
         val mainLayout = view.findViewById<ConstraintLayout>(R.id.cl)
         compassImage = view.findViewById(R.id.compass)
 
-        // Create the Qibla ImageView programmatically
+
         qiblaImage = ImageView(requireContext()).apply {
-            id = View.generateViewId()  // Generate a unique ID
-            setImageResource(R.drawable.qibla)  // Set Qibla image resource
+            id = View.generateViewId()
+            setImageResource(R.drawable.qibla)
             layoutParams = ConstraintLayout.LayoutParams(
                 ConstraintLayout.LayoutParams.WRAP_CONTENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
             )
         }
 
-        // Add Qibla ImageView to the main layout
+
         mainLayout.addView(qiblaImage)
 
-        // Set up constraints to center Qibla icon on the compass
+
         val constraintSet = ConstraintSet()
         constraintSet.clone(mainLayout)
         constraintSet.connect(qiblaImage.id, ConstraintSet.TOP, compassImage.id, ConstraintSet.TOP)
@@ -91,28 +90,28 @@ class qibla : Fragment(), SensorEventListener {
             val orientation = FloatArray(3)
             SensorManager.getOrientation(rotationMatrix, orientation)
 
-            // Get azimuth in degrees
+
             val azimuthInDegrees = Math.toDegrees(orientation[0].toDouble()).toFloat()
 
-            // Rotate the compass image
+
             compassImage.rotation = -azimuthInDegrees
 
-            // Calculate the Qibla direction
+
             val qiblaDirection = calculateQiblaDirection()
             updateQiblaDirection(qiblaDirection - azimuthInDegrees)
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // No action needed for accuracy changes in this case
+
     }
 
-    // Function to update the Qibla direction rotation
+
     private fun updateQiblaDirection(degree: Float) {
-        qiblaImage.rotation = degree  // Rotate the Qibla icon based on the calculated degree
+        qiblaImage.rotation = degree
     }
 
-    // Function to calculate the Qibla direction based on the current location
+
     private fun calculateQiblaDirection(): Float {
         val lat1 = Math.toRadians(currentLatitude)
         val lon1 = Math.toRadians(currentLongitude)
